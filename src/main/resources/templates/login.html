@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Playlist Mate</title>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+	<section class="login-form">	
+		<h1>Playlist Mate</h1>
+		<form action="/member/login" method="post">
+			<div class="int-area">
+				<input type="text" name="email"
+				autocomplete="off" required>
+				<label for="id">EMAIL</label>
+			</div>
+			<div class="int-area">
+				<input type="password" name="pw"
+				autocomplete="off" required>
+				<label for="id">PASSWORD</label>
+			</div>
+			<div class="btn-area">
+				<button class="btn"><span>LOGIN</span></button>
+			</div>
+		</form>
+		<div class="caption">
+		<a href="/member/save">회원가입</a>
+		</div>
+		<form action = "/member/find-id" method= "post">
+		<div class="caption">
+		<a href="/member/find-id">아이디 찾기</a>
+		</div>
+		</form>
+		<div class="caption">
+		<a href="/pw-find">비밀번호를 잊어버리셨나요?</a>
+		</div>
+	</section>
+</body>
+</html>

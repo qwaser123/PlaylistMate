@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Email Check</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required>
+    <button id="checkEmailBtn">확인</button>
+    <div id="emailCheckResult"></div>
+
+    <script>
+        $(document).ready(function() {
+            $('#checkEmailBtn').click(function() {
+                var email = $('#email').val();
+                if (email.length > 0 && /^\S+@\S+\.\S+$/.test(email)) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/member/email-check',
+                        data: {
+                            email: email
+                        },
+                        success: function(result) {
+                            if (result == 'ok') {
+                                $('#emailCheckResult').text('이메일이 존재하지 않습니다.');
+                                $('#emailCheckResult').css('color', 'red');
+                            } else {
+                                $('#emailCheckResult').text('이메일이 존재합니다.');
+                                $('#emailCheckResult').css('color', 'green');
+                            }
+                        }
+                    });
+                } else {
+                    $('#emailCheckResult').text('올바른 이메일 주소를 입력하세요.');
+                    $('#emailCheckResult').css('color', 'gray');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

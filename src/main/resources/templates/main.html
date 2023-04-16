@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Playlist Mate</title>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+    <section class="main-form">
+        <h1>Playlist Mate</h1>
+        <form action="">
+            <div class="btn-area">
+            	<a href="/member/update">
+				<button type="button">내 정보 수정</button>
+				</a>
+			</div>
+            <div class="btn-area">
+            	<a href="/member/logout">
+				<button type="button">로그아웃</button>
+				</a>
+			</div>
+        </form>
+        <form action="">
+            <div class="playlist">
+				<button type="button">Playlist 생성</button>          
+				<button type="button">Playlist 조회</button>           
+				<button type="button">Playlist 추천</button>
+            </div>
+        </form>
+        <div class="p_search">
+            <form action="." method="post">
+              <input class="search-txt" type="text" placeholder="원하는 플레이리스트를 검색해보세요!">
+              <button class="search-btn" type="submit">
+                <i class="fas fa-search"></i>
+              </button>
+            </form>
+          </div>
+        <h1>TOP 30</h1>
+        <img src="/img/top30ex.png">
+    </section>
+</body>
+</html>
