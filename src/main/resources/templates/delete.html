@@ -5,16 +5,21 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Playlist Mate</title>
+<script
+            src="https://code.jquery.com/jquery-3.6.3.min.js"
+            integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU="
+            crossorigin="anonymous"></script>
 <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 	<section class="login-form">
 		<h1>회원 탈퇴</h1>
-		<form action="">
-			<div class="int-area">
-				<input type="text" name="email"
+		<form action="/member/delete">
+		<div class="int-area">
+				<input type="text" name="pw" id="pw" onblur="pwCheck()"
 				autocomplete="off" required>
-				<label for="id">탈퇴 사유를 입력해주세요.</label>
+				<label for="id">비밀번호 확인</label>
+				<p id="check-result"></p>
 			</div>
 			<div class="btn-area">
 				<button type="submit">탈퇴하기</button>
@@ -22,4 +27,33 @@
 		</form>
 	</section>
 </body>
+<script th:inline="javascript">
+    const pwCheck = () => {
+        const pw = document.getElementById("pw").value;
+        const checkResult = document.getElementById("check-result");
+        console.log("입력값: ", pw);
+        $.ajax({
+            type: "post",
+            url: "/member/pw-check",
+            data: {
+                "pw": pw
+            },
+            success: function(res) {
+                console.log("요청성공", res);
+                if (res == "ok") {
+                    console.log("비밀번호 불일치로 탈퇴 불가능합니다.");
+                    checkResult.style.color = "red";
+                    checkResult.innerHTML = "비밀번호 불일치로 탈퇴 불가능합니다.";
+                } else {
+                    console.log("비밀번호 일치로 탈퇴 가능합니다.");
+                    checkResult.style.color = "green";
+                    checkResult.innerHTML = "비밀번호 일치로 탈퇴 가능합니다.";
+                }
+            },
+            error: function(err) {
+                console.log("에러발생", err);
+            }
+        });
+    }
+</script>
 </html>

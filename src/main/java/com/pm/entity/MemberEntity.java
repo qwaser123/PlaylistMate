@@ -4,8 +4,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.pm.dto.MemberDTO;
+import com.pm.repository.MemberRepository;
 
 @Entity
 @Setter
@@ -26,9 +31,6 @@ public class MemberEntity {
     private String email;
 
     
-
-    
-
     public static MemberEntity toMemberEntity(MemberDTO memberDTO) {
         MemberEntity memberEntity = new MemberEntity();
         memberEntity.setId(memberDTO.getId());
@@ -47,4 +49,6 @@ public class MemberEntity {
         return memberEntity;
     }
 
+  
+    
 }

@@ -1,6 +1,11 @@
 package com.pm.controller;
 
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -9,14 +14,17 @@ import org.springframework.web.servlet.ModelAndView;
 import com.pm.dto.MemberDTO;
 import com.pm.service.MemberService;
 
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 @Controller
 @RequiredArgsConstructor
+@EnableAutoConfiguration
 public class MemberController {
     // 생성자 주입
     private final MemberService memberService;
@@ -105,25 +113,24 @@ public class MemberController {
         }
     }
 
-	/* @GetMapping("/member/find") public String findForm() { return "find"; } */
-    	
-    @GetMapping("/pw-find")
-    	public ModelAndView find() {
-    		return new ModelAndView ("find");//member로 바꾸라
-    	}
-    
-    @PostMapping("pw-find")
-    public String findPw(@RequestBody MemberDTO login) throws Exception {
-    	System.out.println("폼에서 받아온 email값 : " + login);
-    	
-    	return MemberService.findPw(login);  
-    }
-    
     @GetMapping("/member/find-id")
     public String findIdForm() {
         return "find-id";
     }
 
+   
+	 @GetMapping("/pw-find") public String findForm() { return "find"; } 
+    	
+	/*
+	 * @GetMapping("/pw-find") public ModelAndView find() { return new ModelAndView
+	 * ("find");//member로 바꾸라 }
+	 * 
+	 * @PostMapping("pw-find") public String findPw(@RequestBody MemberDTO login)
+	 * throws Exception { System.out.println("폼에서 받아온 email값 : " + login);
+	 * 
+	 * return MemberService.findPw(login); }
+	 */
+   
     
 	/*
 	 * @GetMapping("/member/email-check")

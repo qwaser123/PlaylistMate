@@ -21,23 +21,23 @@ spring:
     hibernate:
       ddl-auto: update
       
+    mail:
+      host: smtp.gmail.com
+      port: 587
+      username: 1120ksh98@gmail.com 
+      password: tkdgus123!
+      properties:
+        mail.smtp.auth: true
+        mail.smtp.starttls.enable: true   
    
-  mail:
-    host: smtp.naver.com
-    port: 465
-    username: 1120ksh@naver.com
-    password: wndnjs123!
-    properties:
-      mail.smtp.auth: true
-      mail.smtp.ssl.enable: true   
-      
-      
-      
 #  mail:
-#      host: smtp.gmail.com
-#      port: 587
-#      username: 1120ksh98@gmail.com
-#      password: bhlljbmriwwnmmkt
-#      properties:
-#        mail.smtp.auth: true
-#        mail.smtp.starttls.enable: true
+#    host: smtp.naver.com
+#    port: 465
+#    username: 1120ksh@naver.com
+#    password: wndnjs123!
+#    properties:
+#      mail.smtp.auth: true
+#      mail.smtp.ssl.enable: true   
+      
+      
+      

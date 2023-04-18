@@ -1,6 +1,9 @@
 package com.pm.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.pm.dto.MemberDTO;
 import com.pm.entity.MemberEntity;
@@ -15,9 +18,14 @@ public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	// 이메일로 아이디 조회
+    @Query("SELECT id FROM MemberEntity WHERE email = :email")
+    Integer findIdByEmail(@Param("email") String email);
 
-	static void modifyPw(MemberDTO member) {
-		// TODO Auto-generated method stub
-		
-	}
+    //  비밀번호 업데이트
+    @Modifying
+    @Query("UPDATE MemberEntity SET password = :password WHERE id = :id")
+    void updateUserPassword(@Param("id") Long id, @Param("password") String password);
+	
 }

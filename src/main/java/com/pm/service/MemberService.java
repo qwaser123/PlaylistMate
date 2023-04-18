@@ -6,7 +6,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.pm.dto.MailDTO;
-import com.pm.dto.MailUtil;
 import com.pm.dto.MemberDTO;
 import com.pm.entity.MemberEntity;
 import com.pm.repository.MemberRepository;
@@ -104,96 +103,22 @@ public class MemberService {
         return !byMeEmail.isPresent();
     }
     
-	public static String findPw(MemberDTO login) throws Exception { //static- 수정!!
-		
-		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-		String result = null;
-		
-		System.out.println("login 확인 : " + login);
-		
-		MemberDTO member = MemberRepository.login(login); //수정!
-		
-		if (member != null) {
-			
-			String tempPw = UUID.randomUUID().toString().replace("-", "");
-			tempPw = tempPw.substring(0,10);
-			
-			System.out.println("임시 비밀번호 확인 : " + tempPw);
-			
-			member.setPw(tempPw);
-			
-			MailUtil mail  = new MailUtil();
-			mail.sendmail(member); //수정!!
-			
-			String securepw = encoder.encode(member.getPw());
-			member.setPw(securepw);
-			
-			MemberRepository.modifyPw(member); //수정!! -> 이거 말고 딴거로 바꿔야 되는데 이름이 머지
-			
-			result = "Success";
-			
-		}else {
-			result = "Fail";
-			
-			
-		}
-		return result;
-	}
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-	/*
-	 * public MailDTO createMailAndChangePassword(String memberEmail) { String str =
-	 * getTempPassword(); MailDTO dto = new MailDTO(); dto.setAddress(memberEmail);
-	 * dto.setTitle("Cocolo 임시비밀번호 안내 이메일 입니다.");
-	 * dto.setMessage("안녕하세요. Cocolo 임시비밀번호 안내 관련 이메일 입니다." + " 회원님의 임시 비밀번호는 " +
-	 * str + " 입니다." + "로그인 후에 비밀번호를 변경을 해주세요"); updatePassword(str,memberEmail);
-	 * return dto; }
-	 * 
-	 * //임시 비밀번호로 업데이트 public void updatePassword(String str, String userEmail){
-	 * String memberPassword = str; Long memberId =
-	 * mr.findByMemberEmail(userEmail).getId();
-	 * mmr.updatePassword(memberId,memberPassword); }
-	 * 
-	 * //랜덤함수로 임시비밀번호 구문 만들기 public String getTempPassword(){ char[] charSet = new
-	 * char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C',
-	 * 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R',
-	 * 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
-	 * 
-	 * String str = "";
-	 * 
-	 * // 문자 배열 길이의 값을 랜덤으로 10개를 뽑아 구문을 작성함 int idx = 0; for (int i = 0; i < 10;
-	 * i++) { idx = (int) (charSet.length * Math.random()); str += charSet[idx]; }
-	 * return str; } // 메일보내기 public void mailSend(MailDTO mailDTO) {
-	 * System.out.println("전송 완료!"); SimpleMailMessage message = new
-	 * SimpleMailMessage(); message.setTo(mailDTO.getAddress());
-	 * message.setSubject(mailDTO.getTitle());
-	 * message.setText(mailDTO.getMessage()); message.setFrom("보낸이@naver.com");
-	 * message.setReplyTo("보낸이@naver.com"); System.out.println("message"+message);
-	 * mailSender.send(message); }
-	 * 
-	 * //비밀번호 변경 public void updatePassWord(Long memberId, String memberPassword) {
-	 * mmr.updatePassword(memberId,memberPassword); }
-	 */
-    
-    
-    
-	/*
-	 * public boolean userEmailCheck(String userEmail, String userName) {
-	 * 
-	 * User user = userRepository.findUserByUserId(userEmail); if(user!=null &&
-	 * user.getName().equals(userName)) { return true; } else { return false; } }
-	 */
-    
-}
 
+    
+    //암호화
+	public interface PasswordEncoder {
+
+		String encode(CharSequence rawPassword);
+		boolean matches(CharSequence rawPassword, String encodedPassword);
+		default boolean upgradeEncoding(String encodedPassword) {
+			return false;
+		}
+
+	}
+}
+    
+    
+    
 
 
 
