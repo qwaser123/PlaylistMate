@@ -11,15 +11,16 @@ import com.pm.dto.MailDTO;
 import com.pm.dto.MemberDTO;
 import com.pm.entity.MemberEntity;
 import com.pm.repository.MemberRepository;
-@Transactional
+  
+  @Transactional
   @Service
   public class SendEmailService{
   
 	  private final MemberRepository memberRepository;
   
-  private JavaMailSender mailSender; 
+	  private JavaMailSender mailSender; 
   
-  private static final String from_address = "1120ksh98@gmail.com"; //발신자 주소
+	  private static final String from_address = "1120ksh98@gmail.com"; //발신자 주소
 
   @Autowired
   public SendEmailService(MemberRepository memberRepository, JavaMailSender mailSender) {
@@ -27,14 +28,15 @@ import com.pm.repository.MemberRepository;
       this.mailSender = mailSender;
   }
   
-  public MemberDTO createMailAndChangePassword(String email, String name){ 
+  public String createMailAndChangePassword(String email){ 
 	    String password = getTempPassword();
 	    MemberEntity updatedMember = memberRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("해당 이메일을 가진 회원이 존재하지 않습니다."));
 	    updatedMember.setPw(password);
 	    memberRepository.save(updatedMember);
 
-	    return MemberDTO.toMemberDTO(updatedMember);
+	    return password;
 	}
+
   
   public void updatePassword(String password, String email) {
       MemberEntity updatedMember = memberRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("해당 이메일을 가진 회원이 존재하지 않습니다."));
@@ -61,9 +63,9 @@ import com.pm.repository.MemberRepository;
 		/*
 		 * message.setSubject(mailDto.getTitle()); //제목
 		 */ 
-      message.setSubject("새로운 비밀번호");
+      message.setSubject("임시 비밀번호");
 
-      message.setText("새로운 비밀번호는 " + password + " 입니다.");
+      message.setText("임시 비밀번호는 " + password + " 입니다.");
 
       mailSender.send(message);
   }

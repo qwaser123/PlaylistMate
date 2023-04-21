@@ -23,8 +23,8 @@ public class UserController {
     public void sendNewPassword(HttpServletRequest request) {
         String email = request.getParameter("email");
 
-        // 새로운 비밀번호 생성하고 이메일 전송
-        String newPassword = sendemailService.getTempPassword();
+        // 새로운 비밀번호 생성, 이메일 전송
+        String newPassword = sendemailService.createMailAndChangePassword(email);
         sendemailService.mailSend(email, newPassword);
     }
 }
