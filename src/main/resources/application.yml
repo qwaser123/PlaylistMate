@@ -30,14 +30,6 @@ spring:
         mail.smtp.auth: true
         mail.smtp.starttls.enable: true   
    
-#  mail:
-#    host: smtp.naver.com
-#    port: 465
-#    username: 1120ksh@naver.com
-#    password: wndnjs123!
-#    properties:
-#      mail.smtp.auth: true
-#      mail.smtp.ssl.enable: true   
-      
+
       
       

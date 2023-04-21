@@ -25,7 +25,7 @@ public class UserController {
 
         // 새로운 비밀번호 생성하고 이메일 전송
         String newPassword = sendemailService.getTempPassword();
-        sendemailService.mailsend(email, newPassword);
+        sendemailService.mailSend(email, newPassword);
     }
 }
 

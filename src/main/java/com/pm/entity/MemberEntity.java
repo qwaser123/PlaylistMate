@@ -49,6 +49,16 @@ public class MemberEntity {
         return memberEntity;
     }
 
-  
+    public static MemberDTO toMemberDTO(MemberEntity memberEntity) {
+        MemberDTO memberDTO = new MemberDTO();
+        memberDTO.setId(memberEntity.getId());
+        memberDTO.setName(memberEntity.getName());
+        memberDTO.setPw(memberEntity.getPw());
+        memberDTO.setEmail(memberEntity.getEmail());
+        return memberDTO;
+    }
     
+    public void setPassword(String password) {
+        this.pw = password;
+    }
 }

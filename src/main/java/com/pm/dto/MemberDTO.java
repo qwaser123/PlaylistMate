@@ -28,4 +28,5 @@ public class MemberDTO {
         memberDTO.setEmail(memberEntity.getEmail());
         return memberDTO;
     }
+    
 }
