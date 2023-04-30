@@ -86,15 +86,16 @@ public class MemberService {
         memberRepository.deleteById(id);
     }
 
+	
 	/*
 	 * public String emailCheck(String email) { Optional<MemberEntity> byMeEmail =
 	 * memberRepository.findByEmail(email); if (byMeEmail.isPresent()) { // 조회결과가 있다
-	 * -> 사용할 수 없다. return null; } else { // 조회결과가 없다 -> 사용할 수 있다. return "ok"; } }
+	 * -> 사용할 수 없다. return null; } else { //조회결과가 없다 -> 사용할 수 있다. return "ok"; } } }
+	 * 
 	 */
-
     public boolean emailCheck(String email) {
         Optional<MemberEntity> byMeEmail = memberRepository.findByEmail(email);
-        return !byMeEmail.isPresent();
+        return !byMeEmail.isEmpty();
     }
     
 

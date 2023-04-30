@@ -97,7 +97,7 @@ public class MemberController {
         return "index";
     }
 
-    @PostMapping("/member/email-check")
+    @PostMapping("/member/email-check") //이메일 중복체크 
     public @ResponseBody String emailCheck(@RequestParam("email") String email) {
         System.out.println("memberEmail = " + email);
         boolean result = memberService.emailCheck(email);
