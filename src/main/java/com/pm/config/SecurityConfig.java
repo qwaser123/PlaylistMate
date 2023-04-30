@@ -1,4 +1,4 @@
-package com.pm.Config;
+package com.pm.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

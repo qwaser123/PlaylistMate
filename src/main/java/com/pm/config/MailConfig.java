@@ -1,4 +1,4 @@
-package com.pm.Config;
+package com.pm.config;
 
 import java.util.Properties;
 
