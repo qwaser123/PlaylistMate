@@ -15,11 +15,7 @@ public class MemberDTO {
     private String pw;
     private String email;
     
-	/*
-	 * private String address; private String title; private String message;
-	 */
-    
-
+    //entity -> dto 변환
     public static MemberDTO toMemberDTO(MemberEntity memberEntity) {
         MemberDTO memberDTO = new MemberDTO();
         memberDTO.setId(memberEntity.getId());

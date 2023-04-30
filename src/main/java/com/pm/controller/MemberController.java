@@ -4,23 +4,15 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-
 import com.pm.dto.MemberDTO;
 import com.pm.service.MemberService;
-
-import javax.mail.internet.MimeMessage;
+import com.pm.service.SendEmailService;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
 
 @Controller
 @RequiredArgsConstructor
@@ -28,7 +20,10 @@ import java.util.Random;
 public class MemberController {
     // 생성자 주입
     private final MemberService memberService;
-
+    
+    @Autowired
+    private SendEmailService sendemailService; 
+    
     // 회원가입 페이지 출력 요청
     @GetMapping("/member/save")
     public String saveForm() {
@@ -113,53 +108,70 @@ public class MemberController {
         }
     }
 
+    //아이디 찾기
     @GetMapping("/member/find-id")
     public String findIdForm() {
         return "find-id";
     }
 
-   
-	 @GetMapping("/pw-find") public String findForm() { return "find"; } 
-    	
-	/*
-	 * @GetMapping("/pw-find") public ModelAndView find() { return new ModelAndView
-	 * ("find");//member로 바꾸라 }
-	 * 
-	 * @PostMapping("pw-find") public String findPw(@RequestBody MemberDTO login)
-	 * throws Exception { System.out.println("폼에서 받아온 email값 : " + login);
-	 * 
-	 * return MemberService.findPw(login); }
-	 */
-   
+	 
+	 @GetMapping("/member/withdraw")
+	    public String withdrawForm(HttpSession session, Model model) {
+	        String loginEmail = (String) session.getAttribute("loginEmail");
+	        if (loginEmail != null) {
+	            MemberDTO memberDTO = memberService.withdrawForm(loginEmail);
+	            model.addAttribute("member", memberDTO);
+	            return "withdraw";
+	        } else {
+	            return "redirect:/member/login";
+	        }
+	    }
+
+	    @PostMapping("/member/withdraw")
+	    public String withdraw(HttpSession session, @RequestParam String pw) {
+	    	String loginEmail = (String) session.getAttribute("loginEmail");
+	    	if (loginEmail != null) {
+	    		String pwCheckResult = memberService.pwWith(pw);
+	    		if (pwCheckResult != null) {
+	    			memberService.withdraw(loginEmail);
+	    			session.invalidate();
+	    			return "redirect:/member/login";
+	    		} else {
+	    			return "redirect:/member/withdraw?error=pw";
+	    		}
+	    	} else {
+	    		return "redirect:/member/login";
+	    	}
+	    }
+
+	    @PostMapping("/member/pw-withdraw")
+	    public @ResponseBody String pwWith(@RequestParam("pw") String pw) {
+	    	System.out.println("memberpw = " +pw);
+	        String checkResult = memberService.pwWith(pw);
+	        return checkResult;
+	    }
+	    
+	    @PostMapping("/member/pw-check")
+	    public @ResponseBody String pwCheck(@RequestParam("pw") String pw) {
+	        System.out.println("memberpw = " +pw);
+	        String checkResult = memberService.pwCheck(pw);
+	        return checkResult;
+	    } //비밀번호 변경 관련
+	    
+	    //get수정필요
+	    @GetMapping("/pw-find") public String findForm() { return "find"; } 
+	    // 새로운 비밀번호 생성, 이메일 전송
+	    @PostMapping("/send-password")
+	    @ResponseBody
+	    public void sendNewPassword(HttpServletRequest request) {
+	        String email = request.getParameter("email"); 
+	        String newPassword = sendemailService.createMailAndChangePassword(email);
+	        sendemailService.mailSend(email, newPassword);
+	    }
+	    
+}
+
     
-	/*
-	 * @GetMapping("/member/email-check")
-	 * 
-	 * @ResponseBody public String emailCheck(@RequestParam("email") String email) {
-	 * System.out.println("memberEmail = " + email); String checkResult =
-	 * memberService.emailCheck(email); if (checkResult != null) { return "ok"; }
-	 * else { return "no"; } }
-	 */
-
-}
-
-/*@GetMapping("/check/findPw")
-public @ResponseBody Map<String, Boolean> pw_find(String userEmail, String userName){
-    Map<String,Boolean> json = new HashMap<>();
-    boolean pwFindCheck = userService.userEmailCheck(userEmail,userName);
-
-    System.out.println(pwFindCheck);
-    json.put("check", pwFindCheck);
-    return json;
-}
-
-//등록된 이메일로 임시비밀번호를 발송하고 발송된 임시비밀번호로 사용자의 pw를 변경하는 컨트롤러
-@PostMapping("/check/findPw/sendEmail")
-public @ResponseBody void sendEmail(String userEmail, String userName){
-    MailDto dto = sendEmailService.createMailAndChangePassword(userEmail, userName);
-    sendEmailService.mailSend(dto);
-
-*/
 
 
 

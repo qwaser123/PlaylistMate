@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
     // 이메일로 회원 정보 조회 (select * from member_table where member_email=?)
-    Optional<MemberEntity> findByEmail(String email);
+ 
 
 	static MemberDTO login(MemberDTO login) {
 		// TODO Auto-generated method stub
@@ -27,5 +27,9 @@ public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
     @Modifying
     @Query("UPDATE MemberEntity SET password = :password WHERE id = :id")
     void updateUserPassword(@Param("id") Long id, @Param("password") String password);
-	
+    
+    Optional<MemberEntity> findByEmail(String email);
+    Optional<MemberEntity> findByPw(String pw);
+    Optional<MemberEntity> findById(String id);
+    
 }

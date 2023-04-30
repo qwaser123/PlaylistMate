@@ -2,15 +2,8 @@ package com.pm.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-
 import javax.persistence.*;
-import javax.transaction.Transactional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 import com.pm.dto.MemberDTO;
-import com.pm.repository.MemberRepository;
 
 @Entity
 @Setter
@@ -49,15 +42,6 @@ public class MemberEntity {
         return memberEntity;
     }
 
-    public static MemberDTO toMemberDTO(MemberEntity memberEntity) {
-        MemberDTO memberDTO = new MemberDTO();
-        memberDTO.setId(memberEntity.getId());
-        memberDTO.setName(memberEntity.getName());
-        memberDTO.setPw(memberEntity.getPw());
-        memberDTO.setEmail(memberEntity.getEmail());
-        return memberDTO;
-    }
-    
     public void setPassword(String password) {
         this.pw = password;
     }

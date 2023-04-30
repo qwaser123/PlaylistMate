@@ -1,19 +1,13 @@
 package com.pm.service;
 
 import lombok.RequiredArgsConstructor;
-
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import com.pm.dto.MailDTO;
 import com.pm.dto.MemberDTO;
 import com.pm.entity.MemberEntity;
 import com.pm.repository.MemberRepository;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -115,6 +109,49 @@ public class MemberService {
 		}
 
 	}
+	
+	 public MemberDTO withdrawForm(String email) {
+	        Optional<MemberEntity> memberEntityWrapper = memberRepository.findByEmail(email);
+	        if (memberEntityWrapper.isPresent()) {
+	            MemberEntity memberEntity = memberEntityWrapper.get();
+	            return MemberDTO.toMemberDTO(memberEntity);
+	        } else {
+	            return null;
+	        }
+	    }
+
+	    public void withdraw(String email) {
+	        Optional<MemberEntity> memberEntityWrapper = memberRepository.findByEmail(email);
+	        if (memberEntityWrapper.isPresent()) {
+	            MemberEntity memberEntity = memberEntityWrapper.get();
+	            memberRepository.delete(memberEntity);
+	        }
+	    }
+
+	    public String pwWith(String pw) {
+	    	Optional<MemberEntity> byMePw = memberRepository.findByPw(pw);
+	        if (byMePw.isPresent()) {
+	            MemberEntity memberEntity = byMePw.get();
+	            if (memberEntity.getPw().equals(pw)) {
+	                return "ok";
+	            } else {
+	                return null;
+	            }
+	        } else {
+	            return null;
+	        }
+	    }
+
+	    public String pwCheck(String pw) {
+	        Optional<MemberEntity> byMePw = memberRepository.findByPw(pw);
+	      //비밀번호 조회 후 있는지 없는지 판단
+	        if (byMePw.isPresent()) {
+	            return null;
+	        } else {
+	            return "ok";
+	        }
+	    }
+
 }
     
     
