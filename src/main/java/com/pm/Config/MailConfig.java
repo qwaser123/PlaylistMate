@@ -1,16 +1,14 @@
-package com.pm.service;
+package com.pm.Config;
 
 import java.util.Properties;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 @Configuration
-@ComponentScan(basePackages = {"com.pm.service"})
 public class MailConfig {
 	@Value("${spring.mail.host}")
     private String host;
@@ -26,6 +24,7 @@ public class MailConfig {
 
 	  @Bean
 	    public JavaMailSender javaMailSender() {
+		  	//서버 연결 정보 
 	        JavaMailSenderImpl javamailSender = new JavaMailSenderImpl();
 	        javamailSender.setHost("smtp.gmail.com");
 	        javamailSender.setPort(587);
@@ -39,7 +38,8 @@ public class MailConfig {
 	        props.put("mail.debug", "true");
 	        
 	        return javamailSender;
-	        
-	        
+	         
 	    }
 }
+
+//이메일 전송 설정  

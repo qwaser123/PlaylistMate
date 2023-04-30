@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playlist Mate</title>
+    <script
+            src="https://code.jquery.com/jquery-3.6.3.min.js"
+            integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU="
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<section class="login-form">
+    <h1>회원 탈퇴</h1>
+    <form method="post" action="/member/withdraw">
+        <div class="int-area">
+            <input type="password" name="pw" id="pw" autocomplete="off" required>
+            <label for="pw">비밀번호</label>
+        </div>
+        <div class="int-area">
+            <input type="password" name="pw_confirm" id="pw_confirm" onblur="pwWith()"
+                   autocomplete="off" required>
+            <label for="pw_confirm">비밀번호 확인</label>
+            <p id="check-result"></p>
+        </div>
+        <div class="btn-area">
+            <button type="submit" id="delete-btn">탈퇴하기</button>
+        </div>
+    </form>
+</section>
+</body>
+<script th:inline="javascript">
+const pwWith = () => {
+    const pw = document.getElementById("pw").value;
+    const pwConfirm = document.getElementById("pw_confirm").value;
+    const checkResult = document.getElementById("check-result");
+    if (pw !== pwConfirm) {
+        checkResult.style.color = "red";
+        checkResult.innerHTML = "비밀번호가 일치하지 않습니다.";
+        document.getElementById("delete-btn").disabled = true;
+    } else {
+        $.ajax({
+            type: "post",
+            url: "/member/pw-withdraw",
+            data: {
+                "pw": pw
+            },
+            success: function(res) {
+                console.log("요청성공", res);
+                if (res === "ok") { // 비밀번호 일치하는 경우
+                    console.log("비밀번호 일치로 탈퇴 가능합니다.");
+                    checkResult.style.color = "green";
+                    checkResult.innerHTML = "비밀번호 일치로 탈퇴 가능합니다.";
+                    document.getElementById("delete-btn").disabled = false;
+                } else { // 비밀번호 불일치하는 경우
+                    console.log("비밀번호 불일치로 탈퇴 불가능합니다.");
+                    checkResult.style.color = "red";
+                    checkResult.innerHTML = "비밀번호 불일치로 탈퇴 불가능합니다.";
+                    document.getElementById("delete-btn").disabled = true;
+                }
+            },
+            error: function(err) {
+                console.log("에러발생", err);
+            }
+        });
+    }
+};
+</script>
+</html>
