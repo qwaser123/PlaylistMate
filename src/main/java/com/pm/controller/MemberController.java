@@ -1,12 +1,12 @@
 package com.pm.controller;
 
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.pm.dto.MemberDTO;
 import com.pm.service.MemberService;
 import com.pm.service.SendEmailService;
@@ -27,17 +27,24 @@ public class MemberController {
     // 회원가입 페이지 출력 요청
     @GetMapping("/member/save")
     public String saveForm() {
+       
         return "save";
     }
 
     @PostMapping("/member/save")
-    public String save(@ModelAttribute MemberDTO memberDTO) {
+    public String save(@ModelAttribute MemberDTO memberDTO, Model model) {
         System.out.println("MemberController.save");
         System.out.println("memberDTO = " + memberDTO);
+        if(memberService.emailCheck(memberDTO.getEmail()) == null) {
+            model.addAttribute("errorMsg", "중복된 이메일"); 
+            model.addAttribute("memberDTO", memberDTO);
+            return "save";  
+        }
         memberService.save(memberDTO);
-        return "login";
-    }
-
+        return "login"; //회원가입 성공
+    } 
+  //회원가입   	
+    
     @GetMapping("/member/login")
     public String loginForm() {
         return "login";
@@ -97,24 +104,18 @@ public class MemberController {
         return "index";
     }
 
-    @PostMapping("/member/email-check") //이메일 중복체크 
+    @PostMapping("/member/email-check")
     public @ResponseBody String emailCheck(@RequestParam("email") String email) {
         System.out.println("memberEmail = " + email);
-        boolean result = memberService.emailCheck(email);
-        if (result) {
-            return "ok";
-        } else {
-            return "no";
-        }
-    }
-
+        String checkResult = memberService.emailCheck(email);
+        return checkResult; }
+        
     //아이디 찾기
     @GetMapping("/member/find-id")
     public String findIdForm() {
         return "find-id";
     }
 
-	 
 	 @GetMapping("/member/withdraw")
 	    public String withdrawForm(HttpSession session, Model model) {
 	        String loginEmail = (String) session.getAttribute("loginEmail");
@@ -159,14 +160,18 @@ public class MemberController {
 	    } //비밀번호 변경 관련
 	    
 	    //get수정필요
-	    @GetMapping("/pw-find") public String findForm() { return "find"; } 
+	    @GetMapping("/pw-find") 
+	    public String findForm() { 
+	    	return "find"; 
+	    	} 
+	    
 	    // 새로운 비밀번호 생성, 이메일 전송
 	    @PostMapping("/send-password")
-	    @ResponseBody
-	    public void sendNewPassword(HttpServletRequest request) {
+	    public String sendNewPassword(HttpServletRequest request) {
 	        String email = request.getParameter("email"); 
 	        String newPassword = sendemailService.createMailAndChangePassword(email);
 	        sendemailService.mailSend(email, newPassword);
+	        return "redirect:/member/login";
 	    }
 	    
 }

@@ -87,17 +87,28 @@ public class MemberService {
     }
 
 	
-	/*
-	 * public String emailCheck(String email) { Optional<MemberEntity> byMeEmail =
-	 * memberRepository.findByEmail(email); if (byMeEmail.isPresent()) { // 조회결과가 있다
-	 * -> 사용할 수 없다. return null; } else { //조회결과가 없다 -> 사용할 수 있다. return "ok"; } } }
-	 * 
-	 */
-    public boolean emailCheck(String email) {
+	
+    public String emailCheck(String email) {
+    	 if (email == null || email.isEmpty()) {
+    	        // 이메일 입력 안 된 경우 -> 사용할 수 없다.
+    	        return "no";
+    	    }
         Optional<MemberEntity> byMeEmail = memberRepository.findByEmail(email);
-        return !byMeEmail.isEmpty();
+        if (byMeEmail.isPresent()) {
+            // 조회결과가 있다 -> 사용할 수 없다.
+            return null;
+        } else {
+            // 조회결과가 없다 -> 사용할 수 있다.
+            return "ok";
+        }
     }
-    
+	  
+  	  
+	/*
+	 * //수정 혹은 삭제 public boolean emailCheck1(String email) { Optional<MemberEntity>
+	 * byMeEmail = memberRepository.findByEmail(email); return !byMeEmail.isEmpty();
+	 * }
+	 */
 
     
     //암호화

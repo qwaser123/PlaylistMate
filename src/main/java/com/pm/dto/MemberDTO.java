@@ -1,7 +1,6 @@
 package com.pm.dto;
 
 import com.pm.entity.MemberEntity;
-
 import lombok.*;
 
 @Getter

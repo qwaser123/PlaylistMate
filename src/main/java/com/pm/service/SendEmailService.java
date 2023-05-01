@@ -25,8 +25,9 @@ import com.pm.repository.MemberRepository;
   
   //임시 비밀번호로 변경
   public String createMailAndChangePassword(String email){ 
-	    String password = getTempPassword();
-	    MemberEntity updatedMember = memberRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("해당 이메일을 가진 회원이 존재하지 않습니다."));
+	  MemberEntity updatedMember = memberRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("해당 이메일을 가진 회원이 존재하지 않습니다."));  
+	  String password = getTempPassword();
+	   
 	    updatedMember.setPw(password);
 	    memberRepository.save(updatedMember);
 	    return password;
@@ -48,17 +49,17 @@ import com.pm.repository.MemberRepository;
   String str = "";
   
   int idx = 0; for (int i = 0; i < 10; i++) { 
-	  idx = (int) (charSet.length *Math.random()); str += charSet[idx]; } return str; 
+	  idx = (int) (charSet.length *Math.random()); str += charSet[idx]; } 
+  	  return str; 
   	}
   
   //이메일 전송 
   public void mailSend(String email, String password){
-      System.out.println("이멜 전송 완료!");
+      System.out.println("이메일 전송 완료!");
       SimpleMailMessage message = new SimpleMailMessage();
       message.setTo(email); //받는 사람 주소
       message.setFrom(from_address); //보내는 사람 주소
-  //  message.setSubject(mailDto.getTitle()); //제목
-      message.setSubject("임시 비밀번호");
+      message.setSubject("PlaylistMate 임시 비밀번호 발급 안내 ");
       message.setText("임시 비밀번호는 " + password + " 입니다.");
       mailSender.send(message);
   }

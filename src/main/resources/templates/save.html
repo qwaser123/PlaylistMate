@@ -32,7 +32,7 @@
 				<p id="check-result"></p>
 			</div>
 			<div class="btn-area">
-				<button type="submit">가입하기</button>
+				<button type="submit" id ="sendmail">가입하기</button>
 			</div>
 		</form>
 	</section>
@@ -55,10 +55,16 @@
                     console.log("사용가능한 이메일");
                     checkResult.style.color = "green";
                     checkResult.innerHTML = "사용가능한 이메일";
-                } else {
+                }else if(res == "no") {
+                	//입력 없을 시
+                	 checkResult.innerHTML = "";
+                	 document.getElementById("sendmail").disabled = false;
+                } 
+                else {
                     console.log("이미 사용중인 이메일");
                     checkResult.style.color = "red";
                     checkResult.innerHTML = "이미 사용중인 이메일";
+                    document.getElementById("sendmail").disabled = false;
                 }
             },
             error: function(err) {
