@@ -6,7 +6,6 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.pm.dto.MemberDTO;
 import com.pm.service.MemberService;
 import com.pm.service.SendEmailService;
@@ -167,12 +166,17 @@ public class MemberController {
 	    
 	    // 새로운 비밀번호 생성, 이메일 전송
 	    @PostMapping("/send-password")
-	    public String sendNewPassword(HttpServletRequest request) {
-	        String email = request.getParameter("email"); 
+	    public String sendNewPassword(HttpServletRequest request, Model model) {
+	        String email = request.getParameter("email");
+	        if (memberService.emailCheck(email) != null) {
+	            model.addAttribute("errorMessage", "이메일이 올바르지 않습니다.");
+	            return "login";
+	        }
 	        String newPassword = sendemailService.createMailAndChangePassword(email);
 	        sendemailService.mailSend(email, newPassword);
 	        return "redirect:/member/login";
 	    }
+
 	    
 }
 

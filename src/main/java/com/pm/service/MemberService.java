@@ -87,7 +87,7 @@ public class MemberService {
     }
 
 	
-	
+	//이메일 중복체크 
     public String emailCheck(String email) {
     	 if (email == null || email.isEmpty()) {
     	        // 이메일 입력 안 된 경우 -> 사용할 수 없다.
@@ -102,14 +102,6 @@ public class MemberService {
             return "ok";
         }
     }
-	  
-  	  
-	/*
-	 * //수정 혹은 삭제 public boolean emailCheck1(String email) { Optional<MemberEntity>
-	 * byMeEmail = memberRepository.findByEmail(email); return !byMeEmail.isEmpty();
-	 * }
-	 */
-
     
     //암호화
 	public interface PasswordEncoder {
