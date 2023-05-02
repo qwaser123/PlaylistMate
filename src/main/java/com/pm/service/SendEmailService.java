@@ -23,22 +23,15 @@ import com.pm.repository.MemberRepository;
       this.mailSender = mailSender;
   }
   
-  //임시 비밀번호로 변경
+  //임시 비밀번호로 변경, db업데이트
   public String createMailAndChangePassword(String email){ 
 	  MemberEntity updatedMember = memberRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("해당 이메일을 가진 회원이 존재하지 않습니다."));  
-	  String password = getTempPassword();
+	  String password = getTempPassword(); //getTempPassword()로 생성된 임시비밀번호
 	   
 	    updatedMember.setPw(password);
 	    memberRepository.save(updatedMember);
 	    return password;
 	}
-
-  //비밀번호 db 업데이트
-  public void updatePassword(String password, String email) {
-      MemberEntity updatedMember = memberRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("해당 이메일을 가진 회원이 존재하지 않습니다."));
-      updatedMember.setPw(password);
-      memberRepository.save(updatedMember);
-  }
 
   //랜덤 임시 비밀번호 
   public String getTempPassword(){ char[] charSet = new char[] { '0', '1', '2',
